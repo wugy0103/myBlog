@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div id="app3">
+        <!-- <transition name="fade"> -->
+            <p v-if="seen">看到我了</p>
+        <!-- </transition> -->
+    </div>
+    <script>
+        var app3 = new Vue({
+            el: '#app3',
+            data: {
+                seen: false
+            }
+        })
+    </script>
+    
+    <hr>
+
+    <div id="app4">
+        <ul>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ul>
+    </div>
+    <script>
+        var app4 = new Vue({
+            el: '#app4',
+            data: {
+                todos: [
+                    {text: '11111111111111111'},
+                    {text: '222222'},
+                    {text: '3333'},
+                    {text: '44444444444'}
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>

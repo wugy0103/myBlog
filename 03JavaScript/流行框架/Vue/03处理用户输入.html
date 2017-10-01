@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app5">
+        <p>{{ msg }}</p>
+        <button v-on:click="reverseMsg">
+            逆转
+        </button>
+    </div>
+    <script>    
+        var app5 = new Vue({
+            el: '#app5',
+            data: {
+                msg: 'Hello Vue.js!'
+            },
+            methods: {
+                reverseMsg: function () {
+                    this.msg = this.msg.split('').reverse().join('')
+                }
+            }
+        })
+    </script>
+    <hr>
+    <div id="app6">
+        <p>{{ msg }}</p>
+        <input type="text" v-model="msg">
+    </div>
+    <script>
+        var app6 = new Vue({
+            el: '#app6',
+            data: {
+                msg: 'fdgfdgdfhfg'
+            }
+        })
+    </script>
+</body>
+</html>

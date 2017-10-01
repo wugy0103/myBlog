@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <script>
+        Vue.component('todo-item', {
+            props: ['todo'],
+            template: '<li>{{ todo.text }}</li>'
+        })
+    </script>
+    <div id="app7">
+        <ol>
+            <todo-item v-for="item in todos" v-bind:todo="item" v-bind:key="item.id"></todo-item>
+        </ol>
+    </div>
+    <script>
+        var app7 = new Vue({
+            el: '#app7',
+            data: {
+                todos: [
+                    {
+                        id: 0,
+                        text: '菜111111'
+                    },
+                    {
+                        id: 1,
+                        text: '菜222222222222'
+                    },
+                    {
+                        id: 2,
+                        text: '菜33333333333'
+                    },
+                    {
+                        id: 3,
+                        text: '菜44444444444444'
+                    }
+                ]
+            }
+        })
+    </script>
+
+</body>
+
+</html>
