@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+
+<body>
+    <div id="app">
+        <span v-once>msg: {{ msg }}</span>
+        <hr>
+
+        <div v-html="rawhtml"> <b>bfgfdtrgs</b></div>
+        <hr>
+
+        <div v-bind:id="dynamicId"></div>
+        <button v-bind:disabled="isButtonDisabled">Button</button>
+        <hr>
+
+        {{ number + 1 }}
+        {{ ok ? 'YES' : 'NO' }}
+        {{ msg.split('').reverse().join('') }}
+        <div v-bind:id="'list-' + dynamicId">dynamicId</div>
+        <!-- 这是语句，不是表达式 -->
+        <!-- {{ var a = 1 }} -->
+        <!-- 流控制也不会生效，请使用三元表达式 -->
+        <!-- {{ if (ok) { return message } }} -->
+        <hr>
+        <a :href="url" @click="doSomething">baidu</a>
+        
+        <form v-on:submit.prevent="onSubmit"></form>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '123',
+                rawhtml: '<i>html{{ msg }}</i>',
+                dynamicId: '1',
+                isButtonDisabled: false,
+                number: 3,
+                ok: true,
+                url: 'http://www.baidu.com'
+            },
+            methods: {
+                doSomething: function(){
+                    alert(1)
+                }
+                
+            }
+        })
+        // 你的站点上动态渲染的任意 HTML 可能会非常危险，因为它很容易导致 XSS 攻击。请只对可信内容使用 HTML 插值，绝不要对用户提供的内容使用插值。
+
+        // Mustache 语法不能作用在 HTML 特性上，遇到这种情况应该使用 v-bind 指令,如果求值结果是 falsy 的值 (译者注：falsy 假值是在 Boolean 上下文中认定可转换为false的值)，则该特性将会被删除：
+
+        // 对于所有的数据绑定，Vue.js 都提供了完全的 JavaScript 表达式支持。有个限制就是，每个绑定都只能包含单个表达式，所以下面的例子都不会生效。模板表达式都被放在沙盒中，只能访问全局变量的一个白名单，如 Math 和 Date 。你不应该在模板表达式中试图访问用户定义的全局变量。
+
+        // 一些指令能够接收一个“参数”，在指令名称之后以冒号表示
+
+        // 修饰符 (Modifiers) 是以半角句号 . 指明的特殊后缀，用于指出一个指令应该以特殊方式绑定。例如，.prevent 修饰符告诉 v-on 指令对于触发的事件调用 event.preventDefault()：
+
+        // v-bind 和 v-on 这两个最常用的指令的缩写
+    </script>
+</body>
+
+</html>
