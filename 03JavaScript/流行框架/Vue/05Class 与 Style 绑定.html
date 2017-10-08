@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+    <style>
+        .active {
+            color: red;
+        }
+
+        div {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" style="width:500px;height:800px;">
+        <div v-bind:class="{ active: isActive, 'text-danger': hasError }" class="static">gfdgf
+        </div>
+        <div v-bind:class="classObject"></div>
+        <div v-bind:class="classObject2"></div>
+        <hr>
+
+        <div v-bind:class="[activeClass, errorClass]"></div>
+        <div v-bind:class="[!isActive ? activeClass : '', errorClass]"></div>
+        <div v-bind:class="[{ active: isActive }, errorClass]"></div>
+        <hr>
+
+        <my-component v-bind:class="{ active: isActive }" class="baz boo"></my-component>
+        <hr>
+
+        <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+        <div v-bind:style="styleObject"></div>
+        <div v-bind:style="[styleObject,styleObject2]"></div>
+        <hr>
+
+        <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+        
+
+    </div>
+    <script>
+        Vue.component('my-component', {
+            template: '<p class="foo bar">hi</p>'
+        })
+
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                isActive: true,
+                hasError: true,
+                classObject: {
+                    active: true,
+                    'text-danger': true
+                },
+
+                activeClass: 'active',
+                errorClass: 'text-danger',
+
+                activeColor: 'yellow',
+                fontSize: 30,
+                styleObject: {
+                    color: 'red',
+                    fontSize: '13px'
+                },
+                styleObject2: {
+                    color: 'red',
+                    fontSize: '15px',
+                    width: '100px',
+                    transform: 'translateY(-50%)',
+                    'background-size': '50px'
+                }
+            },
+            computed: {
+                classObject2: function () {
+                    return {
+                        active: this.isActive && !this.error,
+                        'text-danger': this.error && this.error.type === 'fatal'
+                    }
+                }
+            }
+        })
+        // v-bind:class 指令也可以与普通的 class 属性共存，指令增加的class默认在后
+
+        // 当 v-bind:style 使用需要添加浏览器引擎前缀的 CSS 属性时，如 transform，Vue.js 会自动侦测并添加相应的前缀。(demo有问题！！！！！！！！！！！！！！！)
+
+        // 从 2.3.0 起你可以为 style 绑定中的属性提供一个包含多个值的数组，常用于提供多个带前缀的值,只会渲染数组中最后一个被浏览器支持的值
+    </script>
+</body>
+
+</html>
