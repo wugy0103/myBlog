@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+
+</head>
+
+<body>
+    <div id="example">
+        <my-component></my-component>
+        <my-component2></my-component2>
+    </div>
+    <hr>
+    <!-- <table>
+        <my-component2>...</my-component2>
+    </table> -->
+    <!-- 自定义组件 <my-component2> 被认为是无效的内容，因此在渲染的时候会导致错误。变通的方案是使用特殊的 is 属性：demo？？？？？？？？？？？？？？？？？？？？？？？？？？？
+    <table> -->
+    <tr is="my-component2"></tr>
+    </table>
+
+    <hr>
+
+    <div id="app">
+        <input v-model="parentMsg">
+        <br>
+        <child :my-message="parentMsg" v-bind="todo"></child>
+    </div>
+
+    <hr>
+
+    <!-- 传递了一个字符串 "1" -->
+    <comp some-prop="1"></comp>
+    <!-- 传递实际的 number -->
+    <comp v-bind:some-prop="1"></comp>
+    <!-- 因为它是一个字面 prop，它的值是字符串 "1" 而不是 number。如果想传递一个实际的 number，需要使用 v-bind，从而让它的值被当作 JavaScript 表达式计算 -->
+
+    <script>
+        // 要确保在初始化根实例之前注册了组件
+        Vue.component('my-component', {
+            template: '<div> a custom component</div>',
+            data: function () {//data 必须是函数
+                return {
+                    counter: 0
+                }
+            }
+        })
+        var Child = {
+            template: '<div> a component2</div>'
+        }
+        new Vue({
+            el: '#example',
+            components: {
+                'my-component2': Child
+            }
+        })
+
+        // 父子组件的关系可以总结为 props down, events up。父组件通过 props 向下传递数据给子组件，子组件通过 events 给父组件发送消息
+        //   HTML 特性是不区分大小写的。所以，当使用的不是字符串模板，camelCased (驼峰式) 命名的 prop 需要转换为相对应的 kebab-case (短横线隔开式) 命名
+        // 如果你想要用一个对象作为 props 传递所有的属性，你可以使用不带任何参数的 v-bind (即用 v-bind 替换掉 v-bind:prop-name)
+        Vue.component('child', {
+            // 声明 props
+            props: ['myMessage'],
+            // 就像 data 一样，prop 可以用在模板内
+            // 同样也可以在 vm 实例中像“this.message”这样使用
+            template: '<span>say {{ myMessage }}</span>'
+        })
+
+        // 我们可以为组件的 props 指定验证规格。如果传入的数据不符合规格，Vue 会发出警告
+        Vue.component('example', {
+            props: {
+                // 基础类型检测 (`null` 意思是任何类型都可以)
+                propA: Number,
+                // 多种类型
+                propB: [String, Number],
+                // 必传且是字符串
+                propC: {
+                    type: String,
+                    required: true
+                },
+                // 数字，有默认值
+                propD: {
+                    type: Number,
+                    default: 100
+                },
+                // 数组/对象的默认值应当由一个工厂函数返回
+                propE: {
+                    type: Object,
+                    default: function () {
+                        return { message: 'hello' }
+                    }
+                },
+                // 自定义验证函数
+                propF: {
+                    validator: function (value) {
+                        return value > 10
+                    }
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                parentMsg: '',
+                todo: {
+                    text: 'Learn Vue',
+                    isComplete: true
+                }
+            }
+        })
+    </script>
+    
+    <hr>
+
+
+
+    <div id="counter-event-example">
+        <p>{{ total }}</p>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+        <button-counter v-on:increment="incrementTotal"></button-counter>
+    </div>
+    <script>
+        // 使用 $on(eventName) 监听事件
+        // 使用 $emit(eventName) 触发事件
+        // 父组件不能用 $on 侦听子组件释放的事件，而必须在模板里直接用 v-on 绑定
+        // 在某个组件的根元素上监听一个原生事件。可以使用 .native 修饰 v-on
+        Vue.component('button-counter', {
+            template: '<button v-on:click="incrementCounter">{{ counter }}</button>',
+            data: function () {
+                return {
+                    counter: 0
+                }
+            },
+            methods: {
+                incrementCounter: function () {
+                    this.counter += 1
+                    this.$emit('increment')
+                }
+            },
+        })
+        new Vue({
+            el: '#counter-event-example',
+            data: {
+                total: 0
+            },
+            methods: {
+                incrementTotal: function () {
+                    this.total += 1
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
