@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+
+</head>
+
+<body>
+    <div id='example-3'>
+        <input v-model="message" placeholder="edit me">
+        <p>Message is: {{ message }}</p>
+        <hr>
+        <span>Multiline message is:</span>
+        <p style="white-space: pre-line;">{{ message1 }}</p>
+        <br>
+        <textarea v-model="message1" placeholder="add multiple lines"></textarea>
+
+        <hr>
+        <input type="checkbox" id="checkbox" value="dan" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+
+        <hr>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>Checked names: {{ checkedNames }}</span>
+
+        <hr>
+
+
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="two">Two</label>
+        <br>
+        <span>Picked: {{ picked }}</span>
+
+        <hr>
+
+        <select v-model="selected">
+                <option disabled value="">请选择</option>
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
+        <span>Selected: {{ selected }}</span>
+
+        <hr>
+
+        <select v-model="selected1" multiple style="width: 50px;">
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                  </select>
+        <br>
+        <span>Selected: {{ selected1 }}</span>
+
+
+        <hr>
+
+        <!-- 当选中时，`picked` 为字符串 "a" -->
+        <input type="radio" v-model="picked" value="a">
+        <!-- `toggle` 为 true 或 false -->
+        <input type="checkbox" v-model="toggle">
+        <!-- 当选中时，`selected` 为字符串 "abc" -->
+        <select v-model="selected">
+            <option value="abc">ABC</option>
+        </select>
+
+        <input type="checkbox" v-model="toggle" v-bind:true-value="a" v-bind:false-value="b">
+        <!-- // 当选中时
+        vm.toggle === vm.a
+        // 当没有选中时
+        vm.toggle === vm.b -->
+        <input type="radio" v-model="pick" v-bind:value="a">
+        <!-- // 当选中时
+        vm.pick === vm.a -->
+        <select v-model="selected">
+                <!-- 内联对象字面量 -->
+             <option v-bind:value="{ number: 123 }">123</option>
+        </select>
+        <!-- // 当选中时
+        typeof vm.selected // => 'object'
+        vm.selected.number // => 123 -->
+        <hr>
+        <!-- 在 "change" 而不是 "input" 事件中更新 -->
+        <input v-model.lazy="msg">
+
+        <input v-model.number="age" type="number">
+
+        <input v-model.trim="msg">
+    </div>
+
+    <script>
+        new Vue({
+            el: '#example-3',
+            data: {
+                message: '',
+                message1: '',
+                checked: '',
+                checkedNames: [],
+                picked: '',
+                selected: '',
+                selected1: []
+            }
+        })
+
+
+
+        // 对于单选按钮，勾选框及选择列表选项，v-model 绑定的 value 通常是静态字符串 (对于勾选框是逻辑值)：但是有时我们想绑定 value 到 Vue 实例的一个动态属性上，这时可以用 v-bind 实现，并且这个属性的值可以不是字符串。
+
+
+        // 修饰符
+    </script>
+
+</body>
+
+</html>
