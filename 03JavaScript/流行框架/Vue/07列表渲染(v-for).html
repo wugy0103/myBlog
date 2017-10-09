@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+
+</head>
+
+<body>
+    <ul id="example-1">
+        <li v-for="item in items">
+            {{ item.message }}
+        </li>
+    </ul>
+    <hr>
+    <ul id="example-2">
+        <li v-for="(item, index) in items">
+            {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+    </ul>
+    <hr>
+    <ul id="v-for-object" class="demo">
+        <li v-for="value in object">
+            {{ value }}
+        </li>
+
+        <div v-for="(value, key) in object">
+            {{ key }}: {{ value }}
+        </div>
+
+        <div v-for="(value, key, index) in object">
+            {{ index }}. {{ key }}: {{ value }}
+        </div>
+    </ul>
+
+    <hr>
+
+    <div id="todo-list-example">
+        <input v-model="newTodoText" v-on:keyup.enter="addNewTodo" placeholder="Add a todo">
+        <ul>
+            <li is="todo-item" v-for="(todo, index) in todos" v-bind:key="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index, 1)"></li>
+        </ul>
+    </div>
+
+    <script>
+        var example1 = new Vue({
+            el: '#example-1',
+            data: {
+                items: [
+                    { message: 'Foo' },
+                    { message: 'Bar' }
+                ]
+            }
+        })
+
+        // 在 v-for 块中，我们拥有对父作用域属性的完全访问权限。v-for 还支持一个可选的第二个参数为当前项的索引。
+        var example2 = new Vue({
+            el: '#example-2',
+            data: {
+                parentMessage: 'Parent',
+                items: [
+                    { message: 'Foo' },
+                    { message: 'Bar' }
+                ]
+            }
+        })
+
+        // 可以用 v-for 通过一个对象的属性来迭代。
+        new Vue({
+            el: '#v-for-object',
+            data: {
+                object: {
+                    firstName: 'John',
+                    lastName: 'Doe',
+                    age: 30
+                }
+            }
+        })
+        // 在遍历对象时，是按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下是一致的。(??????????????????????)
+
+        // 建议尽可能在使用 v-for 时提供 key,以便它能跟踪每个节点的身份，从而重用和重新排序现有元素,理想的 key 值是每项都有的且唯一的 id。这个特殊的属性相当于 Vue 1.x 的 track-by
+        // <div v-for="item in items" :key="item.id">
+        //   <!-- 内容 -->
+        // </div>
+
+
+        // Vue 包含一组观察数组的变异方法,变异方法 (mutation method)，顾名思义，会改变被这些方法调用的原始数组
+        // push()
+        // pop()
+        // shift()
+        // unshift()
+        // splice()
+        // sort()
+        // reverse()
+        // filter(), concat() 和 slice() 。这些不会改变原始数组，但总是返回一个新数组
+
+
+        // 由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+        //     1.当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue
+        //     2.当你修改数组的长度时，例如：vm.items.length = newLength
+        // 解决方案
+        // q1:
+        // Vue.set
+        // Vue.set(example1.items, indexOfItem, newValue)
+        // Array.prototype.splice
+        // example1.items.splice(indexOfItem, 1, newValue)
+        // q2:
+        // example1.items.splice(newLength)
+        // Vue 不能检测对象属性的添加或删除,可以使用 Vue.set(object, key, value) 方法向嵌套对象添加响应式属性,还可以使用 vm.$set 实例方法，它只是全局 Vue.set 的别名
+
+
+        // 2.2.0+ 的版本里，当在组件中使用 v-for 时，key 现在是必须的。
+
+
+        // todo例子
+        // 注意这里的 is="todo-item" 属性，因为在 <ul> 元素内只有 <li> 元素会被看作有效内容。这样做实现的效果与 <todo-item> 相同，但是可以避开一些潜在的浏览器解析错误。
+        Vue.component('todo-item', {
+            template: '\
+              <li>\
+                {{ title }}\
+                <button v-on:click="$emit(\'remove\')">X</button>\
+              </li>\
+            ',
+            props: ['title']
+        })
+        new Vue({
+            el: '#todo-list-example',
+            data: {
+                newTodoText: '',
+                todos: [
+                    {
+                        id: 1,
+                        title: 'Do the dishes',
+                    },
+                    {
+                        id: 2,
+                        title: 'Take out the trash',
+                    },
+                    {
+                        id: 3,
+                        title: 'Mow the lawn'
+                    }
+                ],
+                nextTodoId: 4
+            },
+            methods: {
+                addNewTodo: function () {
+                    this.todos.push({
+                        id: this.nextTodoId++,
+                        title: this.newTodoText
+                    })
+                    this.newTodoText = ''
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
