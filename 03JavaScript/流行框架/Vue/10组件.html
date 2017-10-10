@@ -115,7 +115,7 @@
             }
         })
     </script>
-    
+
     <hr>
 
 
@@ -125,6 +125,9 @@
         <button-counter v-on:increment="incrementTotal"></button-counter>
         <button-counter v-on:increment="incrementTotal"></button-counter>
     </div>
+
+    <hr>
+
     <script>
         // 使用 $on(eventName) 监听事件
         // 使用 $emit(eventName) 触发事件
@@ -156,6 +159,10 @@
             }
         })
     </script>
+
+    <custom-input v-bind:value="something" v-on:input="something = arguments[0]">
+    </custom-input>
+    <!-- 让组件的 v-model 生效 -->
 </body>
 
 </html>
